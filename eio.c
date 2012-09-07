@@ -283,9 +283,14 @@ static void eio_destroy (eio_req *req);
 #if HAVE_SENDFILE
 # if __linux
 #  include <sys/sendfile.h>
-# elif __FreeBSD__ || defined __APPLE__
+# elif __FreeBSD__
 #  include <sys/socket.h>
 #  include <sys/uio.h>
+# elif __APPLE__
+#  include <sys/socket.h>
+#  include <sys/uio.h>
+#  include <unistd.h>
+#  include <fcntl.h>
 # elif __hpux
 #  include <sys/socket.h>
 # elif __solaris
@@ -1008,19 +1013,16 @@ eio__futimes (int fd, const struct timeval tv[2])
 
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__) && !defined(__DARWIN__)
-#include <unistd.h>
-#include <fcntl.h>
-
+# if __APPLE__
 static int fdatasync(int fd)
 {
   return fcntl(fd, F_FULLFSYNC);
 }
-#endif
-
+#else
 #if !HAVE_FDATASYNC
 # undef fdatasync
 # define fdatasync(fd) fsync (fd)
+#endif
 #endif
 
 static int
