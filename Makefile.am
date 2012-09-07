@@ -4,7 +4,7 @@ VERSION_INFO = 1:0
 
 EXTRA_DIST = LICENSE Changes autogen.sh
 
-#man_MANS = ev.3
+man_MANS = eio.3
 
 include_HEADERS = eio.h
 

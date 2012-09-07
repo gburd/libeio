@@ -10,6 +10,10 @@
 
 #include "eio.h"
 
+/* Example:
+ * $(CC) -O3 -g -O2 .libs/libeio.a demo.c -o demo
+ */
+
 int respipe [2];
 
 void
